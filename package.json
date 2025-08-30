@@ -6,13 +6,19 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.7",
     "@heroicons/react": "^2.2.0",
+    "@sentry/nextjs": "^10.8.0",
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/supabase-js": "^2.56.1",
+    "@types/mixpanel-browser": "^2.60.0",
+    "mixpanel-browser": "^2.69.1",
     "next": "15.5.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
