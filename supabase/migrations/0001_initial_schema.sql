@@ -1,5 +1,6 @@
 -- Create custom types
 CREATE TYPE public.challenge_status AS ENUM ('active', 'completed', 'expired');
+CREATE TYPE public.member_role AS ENUM ('admin', 'member');
 
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
