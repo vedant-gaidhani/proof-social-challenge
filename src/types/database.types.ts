@@ -6,6 +6,9 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+export type MemberRole = 'admin' | 'member';
+export type ChallengeStatus = 'active' | 'completed' | 'expired';
+
 export interface Database {
   public: {
     Tables: {
@@ -21,7 +24,7 @@ export interface Database {
           bio: string | null
         }
         Insert: {
-          id?: string
+          id: string // Must match auth.users id
           username?: string | null
           email: string
           avatar_url?: string | null
