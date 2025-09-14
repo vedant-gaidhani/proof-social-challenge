@@ -13,7 +13,7 @@ export const initAnalytics = () => {
 };
 
 export const analytics = {
-  track: (eventName: string, properties?: Record<string, any>) => {
+  track: (eventName: string, properties?: Record<string, unknown>) => {
     if (process.env.NODE_ENV === 'production') {
       mixpanel.track(eventName, properties);
     } else {

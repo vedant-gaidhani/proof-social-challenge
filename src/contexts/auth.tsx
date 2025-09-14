@@ -1,3 +1,5 @@
+"use client"
+
 import { createContext, useContext, useEffect, useState } from 'react'
 import { User, AuthError } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
@@ -49,21 +51,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-    return { error }
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      if (error) {
+        console.error('SignIn Error:', error)
+      } else if (data.session) {
+        const url = new URL(window.location.href)
+        const next = url.searchParams.get('next') || '/'
+        router.push(next)
+      }
+      return { error }
+    } catch (err) {
+      console.error('Unexpected SignIn Error:', err)
+      return { error: err as AuthError | null }
+    }
   }
 
   const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    })
-    return { error }
+    try {
+      const url = new URL(window.location.href)
+      const next = url.searchParams.get('next') || '/'
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent'
+          }
+        }
+      })
+      if (error) {
+        console.error('Google SignIn Error:', error)
+      }
+      return { error }
+    } catch (err) {
+      console.error('Unexpected Google SignIn Error:', err)
+      return { error: err as AuthError | null }
+    }
   }
 
   const signOut = async () => {
